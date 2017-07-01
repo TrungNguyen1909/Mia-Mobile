@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Mia.SettingsPage">
+        <TableView Intent="Settings">
+            <TableView.Root>
+                <TableSection>
+                    <ViewCell x:Name="MyInfo">
+                        <StackLayout Orientation="Horizontal" Padding="10,0,15,0">
+                            <Label Text="My Info" VerticalTextAlignment="Center"/>
+                            <Label x:Name="ContactInfo" Text="None" 
+                            VerticalTextAlignment="Center" 
+                            TextColor="Gray"
+                            HorizontalTextAlignment="End"
+                            HorizontalOptions="FillAndExpand"/>
+                                <Label Text=" >"
+                                TextColor="Silver"
+                                VerticalTextAlignment="Center"
+                              HorizontalOptions="End"/>
+                        </StackLayout>
+                    </ViewCell>
+                </TableSection>
+            </TableView.Root>
+        </TableView>
+</ContentPage>

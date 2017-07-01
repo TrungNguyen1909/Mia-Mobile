@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:Mia" x:Class="Mia.MiaPage" 
+    xmlns:xfg="clr-namespace:XFGloss;assembly=XFGloss"
+    xmlns:video="clr-namespace:BackgroundVideo.Controls">
+    <xfg:ContentPageGloss.BackgroundGradient>
+        <xfg:Gradient Rotation="150">
+            <xfg:GradientStep StepColor="#2592AA" StepPercentage="0" />
+            <xfg:GradientStep StepColor="#5DAFAA" StepPercentage="0.67" />
+            <xfg:GradientStep StepColor="#9DBBB2" StepPercentage="1" />
+        </xfg:Gradient>
+    </xfg:ContentPageGloss.BackgroundGradient>
+    <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+        <video:Video x:Name="video" Loop="true" Source="" 
+            HorizontalOptions="Fill" />
+    <StackLayout Padding="10,30,10,30">
+        <ScrollView x:Name="Result" VerticalOptions="FillAndExpand"></ScrollView>
+        <StackLayout Orientation="Horizontal">
+            <Entry x:Name="Request"  Placeholder="Ask me anything" TextColor="White" PlaceholderColor="White" BackgroundColor="#2590AA" HorizontalOptions="FillAndExpand">
+            </Entry>
+            <Image x:Name="StartSpeak" Aspect="AspectFit" HeightRequest="44" WidthRequest="44"></Image>
+        </StackLayout>
+    </StackLayout>
+        </Grid>
+</ContentPage>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Mia.RemindersPage"
+xmlns:xfg="clr-namespace:XFGloss;assembly=XFGloss">
+    <xfg:ContentPageGloss.BackgroundGradient>
+        <xfg:Gradient Rotation="150">
+            <xfg:GradientStep StepColor="#2592AA" StepPercentage="0" />
+            <xfg:GradientStep StepColor="#5DAFAA" StepPercentage=".5" />
+            <xfg:GradientStep StepColor="#9DBBB2" StepPercentage="1" />
+        </xfg:Gradient>
+    </xfg:ContentPageGloss.BackgroundGradient>
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="FillAndExpand">
+            <ListView x:Name="RemindersList" VerticalOptions="FillAndExpand">
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding reminder}" Detail="{Binding datetime}">
+                            <TextCell.ContextActions>
+                                <MenuItem Clicked="OnDelete" CommandParameter="{Binding ID}" Text="Delete" IsDestructive="True" />
+                            </TextCell.ContextActions>
+                        </TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+	</ContentPage.Content>
+</ContentPage>
