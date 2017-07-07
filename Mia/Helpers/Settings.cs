@@ -32,22 +32,22 @@ namespace Mia.Helpers
         {
             get
             {
-                return AppSettings.GetValueOrDefault<string>(SettingsKey, SettingsDefault);
+                return AppSettings.GetValueOrDefault(SettingsKey, SettingsDefault);
             }
             set
             {
-                AppSettings.AddOrUpdateValue<string>(SettingsKey, value);
+                AppSettings.AddOrUpdateValue(SettingsKey, value);
             }
         }
         public static string UserInfo
         {
             get
             {
-                return AppSettings.GetValueOrDefault<string>(UserInfoKey, UserInfoDefault);
+                return AppSettings.GetValueOrDefault(UserInfoKey, UserInfoDefault);
             }
             set
             {
-                AppSettings.AddOrUpdateValue<string>(UserInfoKey,value);
+                AppSettings.AddOrUpdateValue(UserInfoKey,value);
             }
         }
     }

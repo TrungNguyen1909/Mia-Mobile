@@ -19,7 +19,7 @@ namespace Mia.DataServices
                 var locator = CrossGeolocator.Current;
 
                 locator.DesiredAccuracy = 100;
-                var coord = await locator.GetPositionAsync(1000);
+                var coord = await locator.GetPositionAsync();
 
                 if (coord != null)
                 {

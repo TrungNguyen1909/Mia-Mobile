@@ -88,7 +88,7 @@ namespace Mia
             var config = new AIConfiguration("6bb0cdf023e54c868895091294ae2a0e", SupportedLanguage.English);
             lus = new ApiAi(config);
 
-            if (String.IsNullOrWhiteSpace(Settings.UserInfo))
+            if (String.IsNullOrWhiteSpace(Settings.UserInfo)&&(Device.RuntimePlatform!=Device.Android))
             {
                 await DisplayAlert("Setup", "Please choose your contact info", "OK");
                 var MyContactPicker = new ContactPicker();
@@ -132,6 +132,7 @@ namespace Mia
             StartSpeak.GestureRecognizers.Remove(StartSpeakTapRecognizer);
             CrossConnectivity.Current.ConnectivityChanged -= OnConnectivityChanged;
             MessagingCenter.Unsubscribe<DeviceOrientationChangeMessage>(this, DeviceOrientationChangeMessage.MessageId);
+            video.PropertyChanged -= Video_PropertyChanged;
         }
         #endregion
         #region ResultUI Update
@@ -158,8 +159,9 @@ namespace Mia
             }
             if (speech)
             {
-                var enLang = CrossTextToSpeech.Current.GetInstalledLanguages().FirstOrDefault(a => a.Language == "en_US");
-                await Task.Run(() => CrossTextToSpeech.Current.Speak(text, false, enLang, volume: 1.0f));
+                var Lang = await CrossTextToSpeech.Current.GetInstalledLanguages();
+                var enLang=Lang.FirstOrDefault(a => a.Language == "en_US");
+                await Task.Run(() => CrossTextToSpeech.Current.Speak(text, enLang));
             }
 
         }
@@ -216,12 +218,16 @@ namespace Mia
         }
         public void ClearResult()
         {
-            CrossContacts.Current.PreferContactAggregation = false;
-            var name = CrossContacts.Current.LoadContact(Settings.UserInfo).FirstName.Trim();
+            string name=String.Empty;
+            if (Device.RuntimePlatform != Device.Android)
+            {
+                CrossContacts.Current.PreferContactAggregation = false;
+                name = " " + CrossContacts.Current.LoadContact(Settings.UserInfo).FirstName.Trim();
+            }
             var Content = new StackLayout();
             Content.Children.Add(new Label
             {
-                Text = "Hi " + name + ", What can I help you today?",
+                Text = "Hi" + name + ", What can I help you today?",
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 TextColor = Color.White
             });
@@ -632,7 +638,7 @@ namespace Mia
         {
             if(e.PropertyName=="Source")
             {
-                if (String.IsNullOrWhiteSpace(video.Source))
+                if (!String.IsNullOrWhiteSpace(video.Source))
                     Request.BackgroundColor = Color.Transparent;
                 else
                     Request.BackgroundColor = Color.FromHex("#2592AA");
