@@ -216,7 +216,6 @@
     <Compile Include="VideoRenderer\VideoRenderer.cs" />
     <Compile Include="DeviceOrientation\DeviceOrientationImplementation.cs" />
     <Compile Include="SpeechToText\SpeechToTextImplementation.cs" />
-    <Compile Include="Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="..\Resources\Weather\weather_clear.mp4">

@@ -216,7 +216,6 @@
     <Compile Include="Contact\Query.cs" />
     <Compile Include="VideoRenderer\VideoRenderer.cs" />
     <Compile Include="DeviceOrientation\DeviceOrientationImplementation.cs" />
-    <Compile Include="Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
