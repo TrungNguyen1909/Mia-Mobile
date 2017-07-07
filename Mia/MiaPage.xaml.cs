@@ -115,6 +115,7 @@ namespace Mia
             Request.TextChanged += OnRequestTextChanged;
             StartSpeak.GestureRecognizers.Add(StartSpeakTapRecognizer);
             CrossConnectivity.Current.ConnectivityChanged += OnConnectivityChanged;
+            video.PropertyChanged += Video_PropertyChanged;
             MessagingCenter.Subscribe<DeviceOrientationChangeMessage>(this, DeviceOrientationChangeMessage.MessageId, OnDeviceOrientationChanged);
         }
 
@@ -353,7 +354,6 @@ namespace Mia
 										video.Source = "Weather/weather_" + data["icon"] + ".mp4";
                                     wvp = data["icon"].ToString();
                                 }
-                                Request.BackgroundColor = Color.Transparent;
                             }
                             break;
                         #endregion
@@ -627,6 +627,19 @@ namespace Mia
                     video.Source = "Weather/weather_" + wvp + ".mp4";
             }
 		}
+
+        void Video_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName=="Source")
+            {
+                if (String.IsNullOrWhiteSpace(video.Source))
+                    Request.BackgroundColor = Color.Transparent;
+                else
+                    Request.BackgroundColor = Color.FromHex("#2592AA");
+                    
+            }
+        }
+
         private void OnRequestCompleted(object sender, EventArgs e)
         {
             NLP(Request.Text, false);
