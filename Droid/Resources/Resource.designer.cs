@@ -28,8 +28,6 @@ namespace Mia.Droid
 		{
 			global::PCLStorage.Resource.String.ApplicationName = global::Mia.Droid.Resource.String.ApplicationName;
 			global::PCLStorage.Resource.String.Hello = global::Mia.Droid.Resource.String.Hello;
-			global::Plugin.TextToSpeech.Resource.String.ApplicationName = global::Mia.Droid.Resource.String.ApplicationName;
-			global::Plugin.TextToSpeech.Resource.String.Hello = global::Mia.Droid.Resource.String.Hello;
 			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::Mia.Droid.Resource.Attribute.actionBarSize;
 			global::XFGloss.Droid.Resource.Animation.abc_fade_in = global::Mia.Droid.Resource.Animation.abc_fade_in;
 			global::XFGloss.Droid.Resource.Animation.abc_fade_out = global::Mia.Droid.Resource.Animation.abc_fade_out;

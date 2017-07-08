@@ -25,7 +25,6 @@ namespace Mia.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
-            CrossTextToSpeech.Current.Init();
             DeviceOrientationImplementation.Init();
             LoadApplication(new App());
             XFGloss.Droid.Library.Init(this,bundle);
