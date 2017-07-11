@@ -43,6 +43,10 @@ namespace Mia
             base.OnAppearing();
             NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
+            if(Device.RuntimePlatform!=Device.Android)
+            {
+                Request.BackgroundColor = Color.FromHex("#2590AA");
+            }
             osvc = DependencyService.Get<IDeviceOrientation>();
             #region Request Permission
             #region Location
@@ -636,7 +640,7 @@ namespace Mia
 
         void Video_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if(e.PropertyName=="Source")
+            if(e.PropertyName=="Source"&&Device.RuntimePlatform!=Device.Android)
             {
                 if (!String.IsNullOrWhiteSpace(video.Source))
                     Request.BackgroundColor = Color.Transparent;
