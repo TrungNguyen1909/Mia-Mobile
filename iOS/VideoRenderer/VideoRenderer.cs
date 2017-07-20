@@ -50,6 +50,11 @@ namespace BackgroundVideo.iOS.Renderers
             try
             {
                 path = Path.Combine(NSBundle.MainBundle.BundlePath, Element.Source);
+
+				if ((!NSFileManager.DefaultManager.FileExists(path)) || String.IsNullOrWhiteSpace(Element.Source))
+				{
+                    throw new Exception();
+				}
             }
 			catch
 			{
@@ -59,21 +64,11 @@ namespace BackgroundVideo.iOS.Renderers
 				videoPlayer.ScalingMode = MPMovieScalingMode.AspectFill;
 				videoPlayer.RepeatMode = MPMovieRepeatMode.One;
 				videoPlayer.View.BackgroundColor = UIColor.Clear;
+                videoPlayer.Stop();
 				SetNativeControl(videoPlayer.View);
 				return;
 			}
 
-			if (!NSFileManager.DefaultManager.FileExists(path))
-			{
-				Debug.WriteLine("Video not exist");
-				videoPlayer = new MPMoviePlayerController();
-				videoPlayer.ControlStyle = MPMovieControlStyle.None;
-				videoPlayer.ScalingMode = MPMovieScalingMode.AspectFill;
-				videoPlayer.RepeatMode = MPMovieRepeatMode.One;
-				videoPlayer.View.BackgroundColor = UIColor.Clear;
-				SetNativeControl(videoPlayer.View);
-				return;
-			}
 
 			// Load the video from the app bundle.
 			NSUrl videoURL = new NSUrl(path, false);

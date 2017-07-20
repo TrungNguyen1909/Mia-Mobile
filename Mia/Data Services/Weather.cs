@@ -34,11 +34,8 @@ namespace Mia.DataServices
 
             Dictionary<string, object> values = JsonConvert.DeserializeObject<Dictionary<string, object>>(weather);
             values = JsonConvert.DeserializeObject<Dictionary<string, object>>(values["current_observation"].ToString());
-            DateTime localTime;
-            string localtimerfc = values["local_time_rfc822"].ToString();
-            localtimerfc = localtimerfc.Remove(localtimerfc.LastIndexOfAny("+-".ToCharArray())-1);
-            DateTime.TryParseExact(localtimerfc, "ddd\\, dd MMM yyyy HH:mm:ss", CultureInfo.InvariantCulture,DateTimeStyles.None,out localTime);
-			values["icon"] = GetWeatherAnimation(values["icon"].ToString(), localTime.Hour, Convert.ToDouble(values["temp_c"]));
+            string iconurl = values["icon_url"].ToString();
+            values["icon"] = GetWeatherAnimation(values["icon"].ToString(), iconurl.Contains("nt_"), Convert.ToDouble(values["temp_c"]));
             return values;
         }
         public static async Task<Dictionary<string, object>> GetForecastWeather(DateTime reqdt, string location = "autoip")
@@ -73,7 +70,7 @@ namespace Mia.DataServices
                 subdata.Add("high_c", high["celsius"]);
                 subdata.Add("low_f", low["fahrenheit"]);
 				subdata.Add("high_f", high["fahrenheit"]);
-				subdata["icon"] = GetWeatherAnimation(subdata["icon"].ToString(), 7, 30);
+                subdata["icon"] = GetWeatherAnimation(subdata["icon"].ToString(), subdata["icon_url"].ToString().Contains("nt_"), 30);
                 if (parsed.Date == reqdt)
                     return subdata;
             }
@@ -102,7 +99,7 @@ namespace Mia.DataServices
             }
             return s;
         }
-        public static string GetWeatherAnimation(string s,int Hour,double temp=30)
+        public static string GetWeatherAnimation(string s,bool isNightTime,double temp=30)
         {
             s = s.Replace("chance", "");
             if (s == "mostlysunny") s= "partlycloudy";
@@ -111,12 +108,11 @@ namespace Mia.DataServices
             if (s == "sleet" || s == "flurries") s = "snow";
             if (s == "clear")
             {
-                if (Hour < 18 && Hour >= 6) return "sunny";
                 return s;
             }
             if (s == "sunny" && temp > 35) return "hot";
             //Day
-            if (Hour < 18 && Hour >= 6)
+            if (!isNightTime)
             {
                 s += "_day";
             }
