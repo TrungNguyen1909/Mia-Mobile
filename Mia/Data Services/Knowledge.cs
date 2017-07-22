@@ -63,7 +63,7 @@ namespace Mia.DataServices
             }
             catch(System.Net.Http.HttpRequestException e) 
             {
-                responseFromServer = "Let see what I found on the web for you.";
+                responseFromServer = "Let's see what I found on the web for you.";
             }
             if (responseFromServer != null && responseFromServer.Contains("Information about"))
             {
