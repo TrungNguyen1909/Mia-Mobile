@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.IO;
 
 namespace Mia.DataServices
 {
@@ -49,9 +50,9 @@ namespace Mia.DataServices
 
 			return final;
         }
-        public static async Task<Dictionary<string, string>> GetKnowledge(string q,double FontSize,double Width)
+        public static async Task<Dictionary<string, object>> GetKnowledge(string q,double FontSize,double Width)
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            Dictionary<string, object> result = new Dictionary<string, object>();
             q = WebUtility.UrlEncode(q);
             string url = @"http://api.wolframalpha.com/v1/spoken?input=" + q + "&appid=" + WAK2+await LocationParameter();
             HttpClient client = new HttpClient();
@@ -60,7 +61,10 @@ namespace Mia.DataServices
             {
                 responseFromServer = await client.GetStringAsync(url);
             }
-            catch { return null; }
+            catch(System.Net.Http.HttpRequestException e) 
+            {
+                responseFromServer = "Let see what I found on the web for you.";
+            }
             if (responseFromServer != null && responseFromServer.Contains("Information about"))
             {
                 responseFromServer = responseFromServer.Replace("Information about", "");
@@ -78,7 +82,17 @@ namespace Mia.DataServices
             
 
             string uri = (@"http://api.wolframalpha.com/v2/simple?input=" + q + "&appid=" + WAK1 + "&fontsize="+(int)FontSize+"&width="+(int)Width+await LocationParameter());
-            result.Add("simpleurl",uri);
+            Stream simpleImage;
+            try
+            {
+                simpleImage = await client.GetStreamAsync(uri);
+            }
+            catch{
+                return null;
+            }
+            if (simpleImage == null)
+                return null;
+            result.Add("simpleimage",simpleImage); 
             return result;
         }
     }

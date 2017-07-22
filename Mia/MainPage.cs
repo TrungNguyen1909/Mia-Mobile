@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 using Xamarin.Forms;
 using XFGloss;
 using Xamarin.Forms.Xaml;
@@ -12,24 +12,20 @@ namespace Mia
         public MainPage()
         {
             masterPage = new MasterPage();
-			var bkgrndGradient = new Gradient()
-			{
-				Rotation = 150,
-				Steps = new GradientStepCollection()
-				{
-                    new GradientStep(Color.FromHex("#2592AA"), 0),
-					new GradientStep(Color.FromHex("#5DAFAA"), .5),
-					new GradientStep(Color.FromHex("#9DBBB2"), 1)
-				}
-			};
-
-			ContentPageGloss.SetBackgroundGradient(this, bkgrndGradient);
+			var CT = GradientTheme.Theme.ThemeList.Single(f => f.Name == Helpers.Settings.Theme);
+			CT.SetBackgroundTheme(this);
             Master = masterPage;
             var homepage = new MiaPage();
             NavigationPage.SetHasNavigationBar(homepage, false);
             Detail = new NavigationPage(homepage);
             masterPage.ListView.ItemSelected += OnItemSelected;
-
+            Helpers.Settings.SettingsChanged+= (object sender, System.ComponentModel.PropertyChangedEventArgs e) =>  {
+                if (e.PropertyName == "Theme")
+                {
+                    CT = GradientTheme.Theme.ThemeList.Single(f => f.Name == Helpers.Settings.Theme);
+                    CT.SetBackgroundTheme(this);
+                }
+            };
         }
 		void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{

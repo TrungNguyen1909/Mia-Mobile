@@ -19,6 +19,16 @@ namespace Mia
                 MyContactPicker.OnContactPicked += (sender, e) => { Settings.UserInfo=e.Id;GetContactInfo(); };
 				Navigation.PushAsync(MyContactPicker,true);
             };
+            Theme.Text = Settings.Theme;
+            MyTheme.Tapped+=delegate {
+                var MyThemePicker = new GradientTheme.ThemePreview();
+                Navigation.PushAsync(MyThemePicker,true);
+            };
+            Helpers.Settings.SettingsChanged += (object sender, System.ComponentModel.PropertyChangedEventArgs e) => 
+			{
+                if (e.PropertyName == "Theme")
+                    Theme.Text = Settings.Theme;
+			};
         }
         void GetContactInfo()
         {

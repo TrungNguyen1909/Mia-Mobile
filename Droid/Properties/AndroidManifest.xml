@@ -15,5 +15,5 @@
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<application android:label="Mia"></application>
+	<application android:label="Mia" android:icon="@drawable/icon"></application>
 </manifest>

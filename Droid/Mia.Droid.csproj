@@ -243,6 +243,9 @@
     <AndroidResource Include="Resources\drawable-xxhdpi-v11\plugin_lc_smallicon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\plugin_lc_smallicon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi-v11\plugin_lc_smallicon.png" />
+    <AndroidResource Include="Resources\drawable\playstore-icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="..\Resources\Weather\weather_clear.mp4">

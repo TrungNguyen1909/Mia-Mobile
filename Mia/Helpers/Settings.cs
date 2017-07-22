@@ -1,7 +1,7 @@
 // Helpers/Settings.cs
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
-
+using System;
 namespace Mia.Helpers
 {
     /// <summary>
@@ -25,6 +25,8 @@ namespace Mia.Helpers
         private static readonly string SettingsDefault = string.Empty;
         private const string UserInfoKey = "UserInfo_key";
         private static readonly string UserInfoDefault = string.Empty;
+        private const string ThemeKey = "Theme_key";
+        private static readonly string ThemeDefault = "Default";
         #endregion
 
 
@@ -37,6 +39,7 @@ namespace Mia.Helpers
             set
             {
                 AppSettings.AddOrUpdateValue(SettingsKey, value);
+
             }
         }
         public static string UserInfo
@@ -47,8 +50,22 @@ namespace Mia.Helpers
             }
             set
             {
-                AppSettings.AddOrUpdateValue(UserInfoKey,value);
+                AppSettings.AddOrUpdateValue(UserInfoKey, value);
             }
         }
+        public static string Theme
+        {
+            get
+            {
+                return AppSettings.GetValueOrDefault(ThemeKey, ThemeDefault);
+            }
+            set
+            {
+                AppSettings.AddOrUpdateValue(ThemeKey, value);
+                SettingsChanged.Invoke(null, new System.ComponentModel.PropertyChangedEventArgs("Theme"));
+            }
+        }
+        public static event EventHandler<System.ComponentModel.PropertyChangedEventArgs> SettingsChanged;
     }
+
 }

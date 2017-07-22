@@ -27,12 +27,13 @@ namespace Mia
     {
         #region Private field
         private ApiAi lus;
-        private bool IsDone = false;
+        private bool IsDone = true;
         private Random Choices = new Random();
         private Reminder item = new Reminder();
         private ISpeechToText micClient = CrossSpeechToText.Current;
         private bool isRecording = false;
         private IDeviceOrientation osvc;
+        private Color BaseColor;
         bool isThinking = false;
         TapGestureRecognizer StartSpeakTapRecognizer = new TapGestureRecognizer();
         private string wvp;
@@ -43,9 +44,12 @@ namespace Mia
             base.OnAppearing();
             NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
+            var CT=GradientTheme.Theme.ThemeList.Single(f => f.Name==Helpers.Settings.Theme);
+            CT.SetBackgroundTheme(this);
+            BaseColor = CT.Gradient.Steps.SingleOrDefault(f => Math.Abs(f.StepPercentage) < 1e-9).StepColor;
             if(Device.RuntimePlatform!=Device.Android)
             {
-                Request.BackgroundColor = Color.FromHex("#2590AA");
+                Request.BackgroundColor = BaseColor;
             }
             osvc = DependencyService.Get<IDeviceOrientation>();
             #region Request Permission
@@ -239,7 +243,7 @@ namespace Mia
             video.Source = null;
             wvp = null;
             IsDone = true;
-            Request.BackgroundColor = Color.FromHex("#2592AA");
+            Request.BackgroundColor = BaseColor;
         }
         private void StatusThinking()
         {
@@ -266,10 +270,10 @@ namespace Mia
                 #region Pre-Processing
                 if (IsDone)
                 {
-                    Result.Content = new StackLayout();
                     IsDone = false;
+                    StatusThinking();
                 }
-                StatusThinking();
+
                 //StopCommandWaiting.Invoke(this, new EventArgs());
                 var Received = await lus.TextRequest(sentence);
                 #endregion
@@ -292,7 +296,12 @@ namespace Mia
                     {
                         #region WebSearch
                         case "web.search":
-                            if (Received.Result.Parameters.ContainsKey("q")) Device.OpenUri(new Uri(String.Concat("https://www.google.com/search?q=" + Received.Result.Parameters["q"])));
+                            if (Received.Result.Parameters.ContainsKey("q"))
+                            {
+                                Device.OpenUri(new Uri(String.Concat("https://www.google.com/search?q=" + Received.Result.Parameters["q"])));
+                                ClearResult();
+                            }
+                            ClearResult();
                             break;
                         #endregion
 
@@ -505,24 +514,19 @@ namespace Mia
                             }
                             break;
                         case "knowledge.search":
-
-                            var knowledgeresult = await Knowledge.GetKnowledge(Received.Result.Parameters["questionword"] + " " + Received.Result.Parameters["q"], Device.GetNamedSize(NamedSize.Small, typeof(Label)), Result.Width);
+                            var kq = Received.Result.Parameters["q"].ToString().Replace("?", "");
+                            var knowledgeresult = await Knowledge.GetKnowledge(Received.Result.Parameters["questionword"] + " " + kq, Device.GetNamedSize(NamedSize.Small, typeof(Label)), Result.Width);
                             if (knowledgeresult != null)
                             {
 
                                 try
                                 {
-                                    WriteResult(knowledgeresult["response"], speech);
+                                    WriteResult(knowledgeresult["response"].ToString(), speech);
                                 }
                                 catch (KeyNotFoundException knfe) { }
                                 try
                                 {
-                                    //WriteResult(new Uri(knowledgeresult["imageurl"], UriKind.Absolute));
-                                }
-                                catch (KeyNotFoundException knfe) { }
-                                try
-                                {
-                                    WriteResult(new Uri(knowledgeresult["simpleurl"], UriKind.Absolute));
+                                    WriteResult(ImageSource.FromStream(() => (Stream)knowledgeresult["simpleimage"]));
                                 }
                                 catch (KeyNotFoundException knfe) { }
 
@@ -530,7 +534,8 @@ namespace Mia
                             }
                             else
                             {
-                                Device.OpenUri(new Uri(String.Concat("https://www.google.com/search?q=" + Received.Result.Parameters["q"])));
+                                Device.OpenUri(new Uri(String.Concat("https://www.google.com/search?q=" + Received.Result.Parameters["questionword"] + " " + kq)));
+                                ClearResult();
                             }
 
                             break;
@@ -645,7 +650,7 @@ namespace Mia
                 if (!String.IsNullOrWhiteSpace(video.Source))
                     Request.BackgroundColor = Color.Transparent;
                 else
-                    Request.BackgroundColor = Color.FromHex("#2592AA");
+                    Request.BackgroundColor = BaseColor;
                     
             }
         }

@@ -4,15 +4,8 @@
              Padding="0,40,0,0"
              Title="Personal Assistant"
     xmlns:xfg="clr-namespace:XFGloss;assembly=XFGloss">
-    <xfg:ContentPageGloss.BackgroundGradient>
-        <xfg:Gradient Rotation="150">
-            <xfg:GradientStep StepColor="#2592AA" StepPercentage="0" />
-            <xfg:GradientStep StepColor="#5DAFAA" StepPercentage=".5" />
-            <xfg:GradientStep StepColor="#9DBBB2" StepPercentage="1" />
-        </xfg:Gradient>
-    </xfg:ContentPageGloss.BackgroundGradient>
         <StackLayout VerticalOptions="FillAndExpand">
-            <ListView x:Name="listView" BackgroundColor="#0B99AC" VerticalOptions="FillAndExpand" SeparatorVisibility="None">
+            <ListView x:Name="listView" VerticalOptions="FillAndExpand" SeparatorVisibility="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ImageCell TextColor="White" Text="{Binding Title}" ImageSource="{Binding IconSource}" />

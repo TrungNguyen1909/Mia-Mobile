@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Mia
@@ -12,8 +12,10 @@ namespace Mia
 		public MasterPage()
 		{
 			InitializeComponent();
-
+			var CT = GradientTheme.Theme.ThemeList.Single(f => f.Name == Helpers.Settings.Theme);
+			CT.SetBackgroundTheme(this);
 			var masterPageItems = new List<MasterPageItem>();
+            listView.BackgroundColor= CT.Gradient.Steps.SingleOrDefault(f => Math.Abs(f.StepPercentage) < 1e-9).StepColor;
 			masterPageItems.Add(new MasterPageItem
 			{
 				Title = "Mia",
@@ -30,6 +32,14 @@ namespace Mia
                 TargetPage=typeof(SettingsPage)
             });
 			listView.ItemsSource = masterPageItems;
+            Helpers.Settings.SettingsChanged+= (object sender, System.ComponentModel.PropertyChangedEventArgs e) => {
+                if(e.PropertyName=="Theme")
+                {
+					CT = GradientTheme.Theme.ThemeList.Single(f => f.Name == Helpers.Settings.Theme);
+					CT.SetBackgroundTheme(this);
+					listView.BackgroundColor = CT.Gradient.Steps.SingleOrDefault(f => Math.Abs(f.StepPercentage) < 1e-9).StepColor;
+                }
+            };
 		}
     }
 }
