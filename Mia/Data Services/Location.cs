@@ -23,7 +23,7 @@ namespace Mia.DataServices
 
                 if (coord != null)
                 {
-                    return (coord.Latitude.ToString() + "," + coord.Longitude.ToString());
+                    return (coord.Latitude.ToString(System.Globalization.CultureInfo.InvariantCulture) + "," + coord.Longitude.ToString(System.Globalization.CultureInfo.InvariantCulture));
                 }
                 else
                 {

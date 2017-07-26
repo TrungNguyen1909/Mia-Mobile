@@ -20,7 +20,6 @@ using Plugin.Contacts.Abstractions;
 using Mia.Helpers;
 using XFGloss;
 using DeviceOrientation.Forms.Plugin.Abstractions;
-
 namespace Mia
 {
     public partial class MiaPage : ContentPage
@@ -47,46 +46,19 @@ namespace Mia
             var CT=GradientTheme.Theme.ThemeList.Single(f => f.Name==Helpers.Settings.Theme);
             CT.SetBackgroundTheme(this);
             BaseColor = CT.Gradient.Steps.SingleOrDefault(f => Math.Abs(f.StepPercentage) < 1e-9).StepColor;
-            if(Device.RuntimePlatform!=Device.Android)
+            if (Device.RuntimePlatform == Device.Android)
             {
-                Request.BackgroundColor = BaseColor;
+                BaseColor = Color.Transparent;
             }
+            Request.BackgroundColor = BaseColor;
             osvc = DependencyService.Get<IDeviceOrientation>();
             #region Request Permission
             #region Location
             StartSpeak.Source = ImageSource.FromResource("Mia.Assets.microMute.png");
-            var locstatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
-            if (locstatus != PermissionStatus.Granted)
-            {
-                if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
-                {
-                    await DisplayAlert("Need location", "Gunna need that location", "OK");
-                }
-
-                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Location });
-                locstatus = results[Permission.Location];
-            }
-            if (locstatus != PermissionStatus.Granted)
-            {
-                await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
-            }
+            await Utils.CheckPermissions(Permission.Location);
             #endregion
             #region Microphone
-            var micstatus = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Microphone);
-            if (micstatus != PermissionStatus.Granted)
-            {
-                if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Microphone))
-                {
-                    await DisplayAlert("Need Microphone access", "Please allow microphone access", "OK");
-                }
-
-                var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Permission.Microphone });
-                micstatus = results[Permission.Microphone];
-            }
-            if (micstatus != PermissionStatus.Granted)
-            {
-                await DisplayAlert("Microphone Denied", "Can not continue, try again.", "OK");
-            }
+            await Utils.CheckPermissions(Permission.Microphone);
             #endregion
             #region Contacts
             await CrossContacts.Current.RequestPermission();

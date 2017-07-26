@@ -16,13 +16,11 @@ using Android.Runtime;
 [assembly: Dependency (typeof (SpeechToTextImplementation))]
 namespace Plugin.SpeechToText
 {
-    public class SpeechToTextImplementation : ISpeechToText,ISpeechRecognitionServerEvents
+    public class SpeechToTextImplementation : Java.Lang.Object,ISpeechRecognitionServerEvents,ISpeechToText
     {
         private MicrophoneRecognitionClient micClient;
         public event EventHandler<string> OnConversationError;
         private bool isRecording = false;
-
-        IntPtr IJavaObject.Handle => throw new NotImplementedException();
 
         public event EventHandler<EventArgsVoiceRecognition> OnRecognized;
         public void Start()
@@ -62,7 +60,7 @@ namespace Plugin.SpeechToText
 
         public void OnFinalResponseReceived(RecognitionResult p0)
         {
-            OnRecognized?.Invoke(this, new EventArgsVoiceRecognition(p0.Results.FirstOrDefault().DisplayText, true));
+            OnRecognized?.Invoke(this, new EventArgsVoiceRecognition(p0.Results[0].DisplayText, true));
             Stop();
         }
 
@@ -73,10 +71,6 @@ namespace Plugin.SpeechToText
         public void OnPartialResponseReceived(string p0)
         {
             OnRecognized?.Invoke(this, new EventArgsVoiceRecognition(p0, false));
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

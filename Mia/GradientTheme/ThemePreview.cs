@@ -29,7 +29,7 @@ namespace Mia.GradientTheme
             }
             Button button = new Button()
             {
-                Text = "Change Theme",
+                Text = "Change Color",
                 TextColor=Color.White
             };
             Label CT = new Label()
@@ -40,6 +40,13 @@ namespace Mia.GradientTheme
             };
             StackLayout tp = new StackLayout();
             tp.VerticalOptions = LayoutOptions.Center;
+            tp.Children.Add(new Label()
+            {
+                Text="Please\nchoose my color.",
+                FontSize=70,
+                TextColor=Color.White,
+                VerticalOptions=LayoutOptions.FillAndExpand
+            });
             tp.Children.Add(CT);
             tp.Children.Add(button);
             Content = tp;

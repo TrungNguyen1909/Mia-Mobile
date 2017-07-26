@@ -21,7 +21,7 @@
             <TableSection>
                 <ViewCell x:Name="MyTheme">
                         <StackLayout Orientation="Horizontal" Padding="10,0,15,0">
-                            <Label Text="Theme" VerticalTextAlignment="Center"/>
+                            <Label Text="Color" VerticalTextAlignment="Center"/>
                             <Label x:Name="Theme" Text="None" 
                             VerticalTextAlignment="Center" 
                             TextColor="Gray"

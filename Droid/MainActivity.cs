@@ -11,10 +11,11 @@ using Android.Speech;
 using Plugin.TextToSpeech;
 using Plugin.SpeechToText;
 using DeviceOrientation.Forms.Plugin.Droid;
+using Plugin.Permissions;
 
 namespace Mia.Droid
 {
-    [Activity(Label = "Mia.Droid", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,WindowSoftInputMode = SoftInput.AdjustPan)]
+    [Activity(Label = "Mia", Icon = "@drawable/icon", Theme = "@style/MyTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,WindowSoftInputMode = SoftInput.AdjustPan)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
@@ -33,6 +34,11 @@ namespace Mia.Droid
 		{
 			base.OnConfigurationChanged(newConfig);
 			DeviceOrientationImplementation.NotifyOrientationChange(newConfig);
+		}
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+		{
+			base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+			PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
     }
 }

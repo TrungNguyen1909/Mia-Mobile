@@ -130,6 +130,7 @@
     <Compile Include="DeviceOrientation\IDeviceOrientation.cs" />
     <Compile Include="GradientTheme\Theme.cs" />
     <Compile Include="GradientTheme\ThemePreview.cs" />
+    <Compile Include="Helpers\PermissionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
