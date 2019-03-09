@@ -140,8 +140,8 @@ namespace Mia
             if (speech)
             {
                 var Lang = await CrossTextToSpeech.Current.GetInstalledLanguages();
-                var enLang=Lang.FirstOrDefault(a => a.Language == "en_US");
-                await Task.Run(() => CrossTextToSpeech.Current.Speak(text, enLang));
+                var enLang=Lang.FirstOrDefault(a => a.Language == "en-US");
+                await CrossTextToSpeech.Current.Speak(text, enLang);
             }
 
         }
@@ -327,6 +327,7 @@ namespace Mia
 
                                 }
                             }
+                            else
                             if (time == "future")
                             {
                                 var data = await Weather.GetForecastWeather(Converted, location);
